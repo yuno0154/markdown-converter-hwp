@@ -78,8 +78,12 @@ def _make_hr_paragraph():
 
 
 class HWPXConverter:
-    def __init__(self, template_path="template.hwpx"):
-        self.template_path = template_path
+    def __init__(self, template_path=None):
+        if template_path is None:
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            self.template_path = os.path.join(base_dir, "template.hwpx")
+        else:
+            self.template_path = template_path
 
     def markdown_to_hwpx_xml(self, md_text):
         """마크다운 텍스트를 한글 XML(section0.xml)로 변환"""
