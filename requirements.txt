@@ -1,2 +1,4 @@
 streamlit
-Flask
+flask
+xhtml2pdf
+markdown
