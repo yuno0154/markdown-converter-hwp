@@ -83,4 +83,4 @@ if st.button("HWPX 파일로 변환하기"):
             st.error(f"변환 중 오류가 발생했습니다: {str(e)}")
 
 st.divider()
-st.caption("© 2026 Markdown to HWPX Converter - Developed for Streamlit")
+st.caption("© 2026 Markdown to HWPX Converter | 만든이: 사곡고 수석교사 최연호")
