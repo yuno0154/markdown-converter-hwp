@@ -1,38 +1,19 @@
-import os
-import urllib.request
 import markdown
-from xhtml2pdf import pisa
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FONT_URL = "https://github.com/google/fonts/raw/main/ofl/nanumgothic/NanumGothic-Regular.ttf"
-FONT_PATH = os.path.join(BASE_DIR, "NanumGothic.ttf")
-
-def download_font():
-    if not os.path.exists(FONT_PATH):
-        try:
-            print("Downloading Korean font for PDF...")
-            urllib.request.urlretrieve(FONT_URL, FONT_PATH)
-        except Exception as e:
-            print(f"Error downloading font: {e}")
+import pdfkit
 
 class PDFConverter:
-    def __init__(self):
-        download_font()
-
     def create_pdf(self, md_text, output_path):
+        # 마크다운을 HTML로 변환
         html_content = markdown.markdown(md_text, extensions=['fenced_code', 'tables'])
-        font_path = FONT_PATH.replace("\\", "/")
         
+        # HTML 템플릿과 CSS 감싸기
+        # Streamlit 에서는 fonts-nanum 우분투 패키지를 설치하므로 시스템 폰트로 적용됩니다.
         html = f"""
         <!DOCTYPE html>
         <html>
         <head>
         <meta charset="utf-8">
         <style>
-            @font-face {{
-                font-family: 'NanumGothic';
-                src: url('{font_path}');
-            }}
             body {{
                 font-family: 'NanumGothic', sans-serif;
                 line-height: 1.6;
@@ -81,8 +62,18 @@ class PDFConverter:
         </html>
         """
         
-        with open(output_path, "wb") as f:
-            pisa_status = pisa.CreatePDF(html, dest=f)
-            
-        if pisa_status.err:
-            raise Exception("PDF 생성 중 오류가 발생했습니다.")
+        # wkhtmltopdf 옵션설정 (여백 및 한글 인코딩)
+        options = {
+            'encoding': 'UTF-8',
+            'margin-top': '20mm',
+            'margin-right': '20mm',
+            'margin-bottom': '20mm',
+            'margin-left': '20mm',
+            'quiet': ''
+        }
+        
+        # PDF 파일 생성
+        try:
+            pdfkit.from_string(html, output_path, options=options)
+        except Exception as e:
+            raise Exception("PDF 생성 중 오류가 발생했습니다. (환경 설정 문제일 수 있습니다.) 상세:" + str(e))

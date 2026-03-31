@@ -1,4 +1,4 @@
 streamlit
 flask
-xhtml2pdf
+pdfkit
 markdown
