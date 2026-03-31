@@ -94,6 +94,22 @@ textarea {
     box-sizing: border-box;
 }
 
+.btn-upload {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    color: #cbd5e1;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.9rem;
+}
+
+.btn-upload:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 .btn-convert {
     background: var(--primary-gradient);
     border: none;

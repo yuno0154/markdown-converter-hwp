@@ -6,12 +6,23 @@ from hwpx_engine import HWPXConverter
 st.set_page_config(page_title="Markdown to HWPX Converter", page_icon="📝")
 
 st.title("📝 마크다운 → 한글(HWPX) 변환기")
-st.markdown("""
-마크다운 텍스트를 입력하고 아래 버튼을 누르면 한글 파일(.hwpx)로 변환하여 다운로드할 수 있습니다.
-""")
+st.markdown("마크다운 텍스트를 입력하거나 `.md` 파일을 업로드하면 한글 파일(.hwpx)로 변환하여 다운로드할 수 있습니다.")
 
-# 입력 창
-md_input = st.text_area("마크다운 내용을 입력하세요:", height=400, placeholder="# 제목\n\n내용을 입력하세요...")
+# MD 파일 업로드
+uploaded_file = st.file_uploader("MD 파일 업로드 (선택)", type=["md", "txt", "markdown"])
+
+initial_text = ""
+if uploaded_file is not None:
+    initial_text = uploaded_file.read().decode("utf-8")
+    st.success(f"파일 로드 완료: {uploaded_file.name}")
+
+# 입력 창 (업로드된 파일 내용이 있으면 자동으로 채움)
+md_input = st.text_area(
+    "마크다운 내용을 입력하세요:",
+    value=initial_text,
+    height=400,
+    placeholder="# 제목\n\n내용을 입력하세요...",
+)
 
 if st.button("HWPX 파일로 변환하기"):
     if not md_input.strip():
@@ -19,27 +30,30 @@ if st.button("HWPX 파일로 변환하기"):
     else:
         try:
             converter = HWPXConverter()
-            
-            # 임시 파일 생성
+
             with tempfile.NamedTemporaryFile(suffix='.hwpx', delete=False) as tmp:
                 tmp_path = tmp.name
-            
-            # 변환 실행
+
             converter.create_hwpx(md_input, tmp_path)
-            
-            # 파일 읽기 및 다운로드 버튼 생성
+
             with open(tmp_path, "rb") as f:
-                st.download_button(
-                    label="📄 변환된 HWPX 다운로드",
-                    data=f,
-                    file_name="converted_document.hwpx",
-                    mime="application/octet-stream"
-                )
-            
-            # 임시 파일 삭제
+                hwpx_bytes = f.read()
             os.unlink(tmp_path)
+
+            # 다운로드 파일명: 업로드된 파일 이름 기반
+            if uploaded_file is not None:
+                download_name = os.path.splitext(uploaded_file.name)[0] + ".hwpx"
+            else:
+                download_name = "converted_document.hwpx"
+
+            st.download_button(
+                label="📄 변환된 HWPX 다운로드",
+                data=hwpx_bytes,
+                file_name=download_name,
+                mime="application/octet-stream",
+            )
             st.success("변환이 완료되었습니다! 위 버튼을 눌러 다운로드하세요.")
-            
+
         except Exception as e:
             st.error(f"변환 중 오류가 발생했습니다: {str(e)}")
 

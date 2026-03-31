@@ -15,7 +15,13 @@ def index():
 
 @app.route('/convert', methods=['POST'])
 def convert():
-    md_content = request.form.get('markdown', '')
+    # MD 파일 업로드 우선, 없으면 textarea 내용 사용
+    md_file = request.files.get('md_file')
+    if md_file and md_file.filename:
+        md_content = md_file.read().decode('utf-8')
+    else:
+        md_content = request.form.get('markdown', '')
+
     if not md_content:
         return "No markdown content provided", 400
 

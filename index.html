@@ -16,9 +16,13 @@
         </header>
 
         <section class="editor-section">
-            <form action="/convert" method="POST" class="converter-box">
+            <form action="/convert" method="POST" enctype="multipart/form-data" class="converter-box">
                 <div class="editor-header">
                     <span>Markdown Input</span>
+                    <label class="btn-upload" title=".md 파일 업로드">
+                        📂 파일 열기
+                        <input type="file" id="md-file-input" name="md_file" accept=".md,.txt,.markdown" style="display:none">
+                    </label>
                     <button type="submit" class="btn-convert">변환 및 다운로드</button>
                 </div>
                 <textarea name="markdown" id="md-input" placeholder="여기에 마크다운 내용을 입력하세요... (예: # 제목 \n 본문 내용)"></textarea>
@@ -31,7 +35,16 @@
     </main>
 
     <script>
-        // 간단한 입력 자동 조절 로직 (필요시 추가)
+        // MD 파일 선택 시 textarea에 내용 로드
+        document.getElementById('md-file-input').addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('md-input').value = e.target.result;
+            };
+            reader.readAsText(file, 'UTF-8');
+        });
     </script>
 </body>
 </html>
