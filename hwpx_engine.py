@@ -202,8 +202,11 @@ class HWPXConverter:
                 compress_type=zipfile.ZIP_STORED
             )
             z.writestr('META-INF/container.xml', self._get_container_xml())
+            z.writestr('[Content_Types].xml', self._get_content_types_xml())
+            z.writestr('_rels/.rels', self._get_rels_xml())
             z.writestr('Contents/content.hpf', self._get_content_hpf())
             z.writestr('Contents/header.xml', self._get_header_xml())
+            z.writestr('version.xml', self._get_version_xml())
             z.writestr('Contents/section0.xml', section_xml)
 
     # ──────────────────────────────────────────────
@@ -220,6 +223,34 @@ class HWPXConverter:
             '              media-type="application/hwpml-package+xml"/>\n'
             '  </rootfiles>\n'
             '</container>'
+        )
+
+    def _get_content_types_xml(self):
+        return (
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+            '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">\n'
+            '  <Default Extension="xml" ContentType="application/xml"/>\n'
+            '  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>\n'
+            '  <Default Extension="hpf" ContentType="application/hwpml-package+xml"/>\n'
+            '  <Override PartName="/version.xml" ContentType="application/vnd.hancom.hwpml-version+xml"/>\n'
+            '  <Override PartName="/Contents/header.xml" ContentType="application/vnd.hancom.hwpml-header+xml"/>\n'
+            '  <Override PartName="/Contents/section0.xml" ContentType="application/vnd.hancom.hwpml-section+xml"/>\n'
+            '</Types>'
+        )
+
+    def _get_rels_xml(self):
+        return (
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">\n'
+            '  <Relationship Id="rId1" Type="http://www.hancom.co.kr/hwpml/2011/relation/contents" Target="Contents/content.hpf"/>\n'
+            '</Relationships>'
+        )
+
+    def _get_version_xml(self):
+        return (
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n'
+            '<hc:version xmlns:hc="http://www.hancom.co.kr/hwpml/2011/core" '
+            'targetApplication="Hancom Office Hwp 2018" major="10" minor="0" micro="0" buildNumber="0" os="Windows"/>'
         )
 
     def _get_content_hpf(self):
