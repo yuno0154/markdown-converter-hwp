@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD2HWPX - 프리미엄 마크다운 변환기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <main class="container">
+        <header>
+            <h1 class="glow-text">MD2HWPX</h1>
+            <p class="subtitle">마크다운을 최신 한글(HWPX) 문서로 변환하세요</p>
+        </header>
+
+        <section class="editor-section">
+            <form action="/convert" method="POST" class="converter-box">
+                <div class="editor-header">
+                    <span>Markdown Input</span>
+                    <button type="submit" class="btn-convert">변환 및 다운로드</button>
+                </div>
+                <textarea name="markdown" id="md-input" placeholder="여기에 마크다운 내용을 입력하세요... (예: # 제목 \n 본문 내용)"></textarea>
+            </form>
+        </section>
+
+        <footer>
+            <p>© 2026 Antigravity MD2HWPX Project. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script>
+        // 간단한 입력 자동 조절 로직 (필요시 추가)
+    </script>
+</body>
+</html>

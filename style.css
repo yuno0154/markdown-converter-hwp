@@ -1,0 +1,118 @@
+:root {
+    --primary-gradient: linear-gradient(135deg, #6e8efb, #a777e3);
+    --bg-color: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-color: #f8fafc;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glass-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 30%, #302b63 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, #240b36 0%, transparent 40%);
+    z-index: -1;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    z-index: 1;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.glow-text {
+    font-size: 3.5rem;
+    font-weight: 600;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: #94a3b8;
+    font-weight: 300;
+}
+
+.converter-box {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #cbd5e1;
+}
+
+textarea {
+    width: 100%;
+    height: 400px;
+    background: transparent;
+    border: none;
+    color: #f1f5f9;
+    font-family: 'Inter', monospace;
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.btn-convert {
+    background: var(--primary-gradient);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-convert:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(110, 142, 251, 0.4);
+}
+
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: #64748b;
+}
